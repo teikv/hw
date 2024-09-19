@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style  type="text/css">
+        .box {
+            width: 20px;
+            
+            height: 20px;
+            float: left;
+            border: 1px;
+            border-color: black;
+            border-style: solid;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            background: yellow;
+        }
+    </style>
+</head>
+<body>
+    
+    <p style="color : red; background-color: yellow"" id="kq"> ket qua la </p>
+
+    <script type="text/javascript">
+        var a = "hello";
+        var b = "world";
+        var c = a + " " + b;
+        //alert(c);
+        //document.write(c);
+        document.getElementById("kq").innerHTML = c;
+    
+    for (let j = 0; j < 5; j++) {
+        for (let i = 0; i < 10; i++) {
+            if (j % 2 == 0) {
+                document.write ("<div class='box' style='background-color: red'> </div>");
+            } else {
+                document.write ("<div class='box' style='background-color: gray'> </div>");
+            }
+
+        }
+            document.write("<div style='clear:both'></div>");
+    }
+    </script>
+
+</body>
+</html>

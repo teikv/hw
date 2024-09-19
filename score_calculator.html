@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documnet</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    form div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 50px;
+        background-color: gray;
+        border: 4px solid red;
+       
+
+    }
+    h1 {
+        text-align: center;
+        color: blue;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        margin: 10px 0 5px;
+        display: inline-block;
+        width: 150px;
+        margin-right: 10px;
+    
+    }
+    
+    input, select {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: calc(100% - 160px);
+     
+    }
+    select {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 10%;
+     
+    }
+    button {
+        padding: 10px;
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
+        border: none;
+
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
+    button:hover {
+        background-color: rgb(209, 206, 206);
+    }
+    
+    #result {
+        margin-top: 20px;
+        position: relative;
+        right: 44%;
+        bottom: 70px;
+        color: red;
+        font-weight: bold;
+        
+    }
+    
+    #result h3 {
+        text-align: center;
+    }
+    
+    #result p {
+        font-size: 16px;
+        text-align: center;
+        margin: 5px 0;
+    }
+    select{
+        color: red;
+    }
+    #ok{
+    width: 50px;
+    position: relative;
+    top:97px;
+    left: 30%;
+    }
+    #cancel{
+        width: 70px;
+        position: relative;
+        top: 62px;
+        left: 50%;
+    }
+    input, select{
+        position: relative;
+        bottom: 30px;
+        left: 90px;
+    }
+    
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BANG DIEM CUA EM</h1>
+        <form id="gradeForm">
+           
+
+            <label for="semester1">Semester1:</label>
+            <input type="number" id="semester1" step="0.1" min="0" max="10" required>
+
+            <label for="semester2">Semester2:</label>
+            <input type="number" id="semester2" step="0.1" min="0" max="10" required>
+            <label for="year">Year:</label>
+            <select id="year">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <label for="summarize">Summarize:</label>
+            <input type="text" id="average" readonly>
+           
+            <button id="ok" type="button" onclick="calculate()">OK</button>
+            <button id="cancel" type="button">Cancel</button>
+        </form>
+
+        <div id="result">
+            <p id="classification"></p>
+        </div>
+    </div>
+
+    <script>function calculate() {
+        if (document.getElementById("semester1").value === "" || document.getElementById("semester2").value === "") {
+            alert("Please enter your grades!");
+            return;
+        }
+        if (document.getElementById("semester1").value < 0 || document.getElementById("semester1").value > 10 || document.getElementById("semester2").value < 0 || document.getElementById("semester2").value > 10) {
+            alert("Grades must be between 0 and 10!");
+            return;
+        }
+        if (document.getElementById("year").value === "") {
+            alert("Please select your year!");
+            return;
+        }
+        const semester1 = parseFloat(document.getElementById("semester1").value);
+        const semester2 = parseFloat(document.getElementById("semester2").value);
+        
+        // Tính điểm trung bình
+        const average = (semester1 + semester2) / 2;
+        document.getElementById("average").value = average.toFixed(2);
+    
+        // Xếp loại học sinh
+        let classification = "";
+        if (average >= 8.5) {
+            classification = "Hoc sinh gioi";
+        } else if (average >= 6.5) {
+            classification = "Hoc sinh kha";
+        } else if (average >= 5.0) {
+            classification = "Hoc sinh trung binh";
+        } else {
+            classification = "Hoc sinh yeu";
+        }
+    
+        document.getElementById("classification").innerText =  classification;
+    }
+    
+    </script>
+</body>
+</html>
