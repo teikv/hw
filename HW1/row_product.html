@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>New Product</h1>
+    <hr>
+    <div class="section">
+        <form id="frm">
+        <p>
+            <label>
+                Product name
+                <input type="text" name="pname" id="pname">
+            </label>
+        </p>
+        <p>
+            <label>
+                Product Quality
+                <input type="text" name="qty" id="qty">
+            </label>
+        </p>
+        <p>
+            <label>
+                Product Price
+                <input type="text" name="pri" id="pri">
+            </label>
+        </p>
+        <p>
+            <button type="button" onclick="add()">Add</button>
+            <button type="button">Cancel</button>
+        </p>
+    </form>
+    <table id="tb">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Quality</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- thêm ở đây -->
+            <tr id="totalRow">
+                <td colspan="4">Total</td>
+                <td id="total">0</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+    var id = 0;
+    var total = 0;
+
+    function add() {
+        id++;
+        var pname = frm.pname.value;
+        var qty = frm.qty.value;
+        var price = frm.pri.value;
+        var sub = qty * price;
+
+       
+        var row = "<tr>";
+        row += "<td>" + id + "</td>";
+        row += "<td>" + pname + "</td>";
+        row += "<td>" + qty + "</td>";
+        row += "<td>" + price + "</td>";
+        row += "<td>" + sub + "</td>";
+        row += "</tr>";
+
+        var totalRow = document.getElementById('totalRow');
+        totalRow.insertAdjacentHTML('beforebegin', row);
+
+        total = parseInt(total) + parseInt(sub);
+        document.getElementById('total').innerHTML = total;
+
+        frm.pname.value = '';
+        frm.qty.value = '';
+        frm.pri.value = '';
+    }
+</script>
+</html>

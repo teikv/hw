@@ -140,7 +140,7 @@
             <input type="text" id="average" readonly>
            
             <button id="ok" type="button" onclick="calculate()">OK</button>
-            <button id="cancel" type="button">Cancel</button>
+            <button id="cancel" type="button" onclick="reset()">Cancel</button>
         </form>
 
         <div id="result">
@@ -148,29 +148,21 @@
         </div>
     </div>
 
-    <script>function calculate() {
-        if (document.getElementById("semester1").value === "" || document.getElementById("semester2").value === "") {
-            alert("Please enter your grades!");
-            return;
-        }
-        if (document.getElementById("semester1").value < 0 || document.getElementById("semester1").value > 10 || document.getElementById("semester2").value < 0 || document.getElementById("semester2").value > 10) {
-            alert("Grades must be between 0 and 10!");
-            return;
-        }
-        if (document.getElementById("year").value === "") {
-            alert("Please select your year!");
-            return;
-        }
+    <script>
+        function calculate() {
+    
         const semester1 = parseFloat(document.getElementById("semester1").value);
         const semester2 = parseFloat(document.getElementById("semester2").value);
-        
-        // Tính điểm trung bình
-        const average = (semester1 + semester2) / 2;
+        const year = parseInt(document.getElementById("year").value);
+
+        if (isNaN(parseFloat(document.getElementById("semester1").value)) && isNaN(parseFloat(document.getElementById("semester2").value))) {
+            document.getElementById("classification").innerText = "Vui long nhap diem";
+            return;
+        }else{
+
+        const average = (semester1 + semester2 * year) / (year + 1);
         document.getElementById("average").value = average.toFixed(2);
-    
-        // Xếp loại học sinh
-        let classification = "";
-        if (average >= 8.5) {
+        if (average >= 8) {
             classification = "Hoc sinh gioi";
         } else if (average >= 6.5) {
             classification = "Hoc sinh kha";
@@ -181,6 +173,14 @@
         }
     
         document.getElementById("classification").innerText =  classification;
+        }   
+    }
+    function reset() {
+        document.getElementById("semester1").value = "";
+        document.getElementById("semester2").value = "";
+        document.getElementById("year").value = "1";
+        document.getElementById("average").value = "";
+        document.getElementById("classification").innerText = "";
     }
     
     </script>
