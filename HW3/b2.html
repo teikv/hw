@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+        }
+        .title {
+            font-family: Arial, sans-serif;
+        }
+        #img {
+            width: 100%;
+            height: 500px;
+        }
+        #card {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .div_array {
+            border: 1px solid rgba(0, 0, 0, 0.089);
+            padding: 10px;
+            max-width: 300px;
+        }
+      
+        #button {
+            background-color: rgb(55, 0, 255);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="container">
+    <h1 class="title">Thời Trang Nam</h1>
+    <div>
+        <card id="card">
+        </card>
+        
+    </div>    
+    <script>
+        var array = 
+            [
+                {
+                    id: "1",
+                    img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/460/639/products/z4433936132052-c5d0ead1b0f0a85144dd2805611b86c5-min.jpg?v=1686888784147",
+                    name: "The Cosmo (Đen) Quần short kaki",
+                    price: "370.000 VND",
+                },
+
+                {
+                    id: "2",
+                    img: "https://zizoou.com/cdn/shop/products/Quan-Baggy-Jean-nam-nu-2b-1-Quan-ong-rong-den-ZiZoou-Store_4472x.jpg?v=1680281694",
+                    name: "Quần baggy đen sang trọng QQ",
+                    price: "398.000 VND",
+                },
+
+                {
+                    id: "3",
+                    img: "https://product.hstatic.net/200000690725/product/tp028---bk004-_19__c1131cd0877543acb6e862aef72bde16_master.jpg",
+                    name: "The Cosmo (Đen) Quần short kaki",
+                    price: "300.000 VND",
+                },
+
+                {
+                    id: "4",
+                    img: "https://4menshop.com/images/thumbs/2020/01/quan-short-kaki-mau-nau-qs204-15057.jpg",
+                    name: "The Cosmo (Đen) Quần short kaki",
+                    price: "300.000 VND",
+                },
+            ];  
+        var card = document.getElementById("card");
+        for(i = 0; i < array.length; i++){
+            card.innerHTML += 
+            `
+            <div class = div_array>
+                <img src="${array[i].img}" id = "img">
+                <h3>${array[i].name}</h3>
+                <p>${array[i].price}</p>
+                <button id = "button">Đặt mua</button>
+            </div>
+            
+            `
+        }
+        
+    </script>
+</body>
+</html>
