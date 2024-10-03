@@ -1,29 +1,52 @@
     var product = [
         {
             id:"SP1",
-            name:"Standard Room",
-            img : "std.png",
+            name:"Áo dài thêu họa tiết vtc ",
+            img : "s11.jpg",
             price:122000,
         },
         {
             id:"SP2",
-            name:"Superior Room",
-            img : "spr.png",
+            name:"Áo dài truyền thống",
+            img : "s12.jpg",
             price:400000,
         },
         {
             id:"SP3",
-            name:"Deluxe Room",
-            img : "dlx.png",
+            name:"Áo dài",
+            img : "s13.jpg",
             price:350000,
         },
         {
             id:"SP4",
-            name:"Suite Room",
-            img : "suite.png",
+            name:"Áo dài hiện đại",
+            img : "s14.jpg",
             price:564000,
         },
-        
+        {
+            id:"SP5",
+            name:"Váy baggy",
+            img : "s21.jpg",
+            price:654000,
+        },
+        {
+            id:"SP6",
+            name:"Váy chấm bi trắng",
+            img : "s22.jpg",
+            price:123000,
+        },
+        {
+            id:"SP7",
+            name:"Váy xanh",
+            img : "s23.jpg",
+            price:345000,
+        },
+        {
+            id:"SP8",
+            name:"Váy màu cam",
+            img : "s24.jpg",
+            price:258000,
+        },
     ];
 // đẩy mảng product vào local
     function Save(){
