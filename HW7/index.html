@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangle Calculator</title>
+</head>
+<body>
+    <form>
+        <input placeholder="Nhap chieu dai: " type="number" id="chieudai">
+        <input placeholder="Nhap chieu rong: " type="number" id="chieurong">
+        <button type="button" onclick="dt()">Tinh dien tich</button>
+        <button type="button" onclick="cv()">Tinh chu vi</button>
+        <p id="cv"></p>
+        <p id="dt"></p>
+    </form>    
+    <script>
+        const chuvi = (a, b) => (a + b) * 2;
+        const dientich = (a, b) => a * b;
+
+        function cv() {
+            const a = parseFloat(document.getElementById("chieudai").value);
+            const b = parseFloat(document.getElementById("chieurong").value);
+            const cv = chuvi(a, b);
+            document.getElementById("cv").innerHTML = "Chu vi hinh chu nhat la: " + cv;
+        }
+
+        function dt() {
+            const a = parseFloat(document.getElementById("chieudai").value);
+            const b = parseFloat(document.getElementById("chieurong").value);
+            const dt = dientich(a, b);
+            document.getElementById("dt").innerHTML = "Dien tich hinh chu nhat la: " + dt;
+        }
+    </script>
+</body>
+</html>

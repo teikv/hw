@@ -1,3 +1,5 @@
+
+
 const chuvi = (a, b) => (a + b) * 2;
 const dientich = (a, b) => a * b;
 
