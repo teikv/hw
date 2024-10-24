@@ -1,76 +1,136 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const apiUrl = 'https://6719eefcacf9aa94f6a8663b.mockapi.io/place';
-    const tableBody = document.getElementById('productTableBody');
+const apiUrl = "https://6719eefcacf9aa94f6a8663b.mockapi.io/place";
 
-    // Fetch and display data
-    async function fetchData() {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        displayData(data);
-    }
+// Hàm lấy tất cả dữ liệu (Read)
+function fetchAllData(callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", apiUrl, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            callback(null, JSON.parse(xhr.responseText));
+        } else {
+            callback(xhr.status, null);
+        }
+    };
+    xhr.send();
+}
 
-    function displayData(data) {
-        tableBody.innerHTML = '';
-        data.forEach(item => {
-            const row = `
-                <tr>
-                    <td>${item.id}</td>
-                    <td>${item.name}</td>
-                    <td><img src="${item.image}" alt="${item.name}" width="100"></td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="editItem(${item.id})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.id})">Delete</button>
-                    </td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
-    }
+// Hàm thêm dữ liệu mới (Create)
+function createItem(data, callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", apiUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function() {
+        if (xhr.status === 201) {
+            callback(null, JSON.parse(xhr.responseText));
+        } else {
+            callback(xhr.status, null);
+        }
+    };
+    xhr.send(JSON.stringify(data));
+}
 
-    fetchData();
+// Hàm xóa dữ liệu (Delete)
+function deleteItem(id, callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("DELETE", `${apiUrl}/${id}`, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            callback(null, JSON.parse(xhr.responseText));
+        } else {
+            callback(xhr.status, null);
+        }
+    };
+    xhr.send();
+}
 
-    // Add new item
-    document.getElementById('addItemForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const name = document.getElementById('name').value;
-        const image = document.getElementById('image').value;
+// Hàm cập nhật dữ liệu (Update)
+function updateItem(id, data, callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", `${apiUrl}/${id}`, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            callback(null, JSON.parse(xhr.responseText));
+        } else {
+            callback(xhr.status, null);
+        }
+    };
+    xhr.send(JSON.stringify(data));
+}
 
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, image })
-        });
-
-        const newItem = await response.json();
-        fetchData();
+// Hiển thị danh sách các địa điểm
+function renderTable(data) {
+    const productTableBody = document.getElementById("productTableBody");
+    productTableBody.innerHTML = "";
+    data.forEach(item => {
+        productTableBody.innerHTML += `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td><img src="${item.image}" alt="${item.name}" width="100"></td>
+                <td>
+                    <button class="btn btn-danger btn-sm" onclick="handleDelete(${item.id})">Delete</button>
+                </td>
+            </tr>
+        `;
     });
+}
 
-    // Edit item
-    window.editItem = async function(id) {
-        const name = prompt('Enter new name:');
-        const image = prompt('Enter new image URL:');
-
-        const response = await fetch(`${apiUrl}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, image })
-        });
-
-        const updatedItem = await response.json();
-        fetchData();
-    };
-
-    // Delete item
-    window.deleteItem = async function(id) {
-        const response = await fetch(`${apiUrl}/${id}`, {
-            method: 'DELETE'
-        });
-
-        const result = await response.json();
-        fetchData();
-    };
+// Lấy và hiển thị danh sách địa điểm khi trang được tải
+document.addEventListener("DOMContentLoaded", function() {
+    fetchAllData(function(err, data) {
+        if (err) {
+            console.error("Error fetching data:", err);
+        } else {
+            renderTable(data);
+        }
+    });
 });
+
+// Thêm mới một địa điểm
+document.getElementById("addItemForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const image = document.getElementById("image").value;
+
+    const newItem = {
+        name: name,
+        image: image
+    };
+
+    createItem(newItem, function(err, data) {
+        if (err) {
+            console.error("Error creating item:", err);
+        } else {
+            // Sau khi tạo mới, cập nhật lại danh sách
+            fetchAllData(function(err, data) {
+                if (err) {
+                    console.error("Error fetching data:", err);
+                } else {
+                    renderTable(data);
+                }
+            });
+        }
+    });
+});
+
+// Xóa một địa điểm
+function handleDelete(id) {
+    if (confirm("Are you sure you want to delete this item?")) {
+        deleteItem(id, function(err, data) {
+            if (err) {
+                console.error("Error deleting item:", err);
+            } else {
+                // Sau khi xóa, cập nhật lại danh sách
+                fetchAllData(function(err, data) {
+                    if (err) {
+                        console.error("Error fetching data:", err);
+                    } else {
+                        renderTable(data);
+                    }
+                });
+            }
+        });
+    }
+}
