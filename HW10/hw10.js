@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${item.name}</td>
                     <td><img src="${item.image}" alt="${item.name}" width="100"></td>
                     <td>
-                        <button onclick="editItem(${item.id})">Edit</button>
-                        <button onclick="deleteItem(${item.id})">Delete</button>
+                        <button class="btn btn-warning btn-sm" onclick="editItem(${item.id})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.id})">Delete</button>
                     </td>
                 </tr>
             `;

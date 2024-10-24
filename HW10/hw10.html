@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tourism CRUD</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5">
         <h1>Tourism</h1>
-        <form id="addItemForm">
-            <input type="text" id="name" placeholder="Name" required>
-            <input type="text" id="image" placeholder="Image URL" required>
-            <button type="submit">Add Item</button>
+        <form id="addItemForm" class="mb-4">
+            <div class="form-group">
+                <input type="text" id="name" class="form-control" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="image" class="form-control" placeholder="Image URL" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Item</button>
         </form>
-        <table class="table" border="1">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>ID</th>
