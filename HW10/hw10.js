@@ -1,61 +1,69 @@
-const apiUrl = "https://6719eefcacf9aa94f6a8663b.mockapi.io/place";
+const apiUrl = 'https://6719eefcacf9aa94f6a8663b.mockapi.io/place';
 
-// Hàm lấy tất cả dữ liệu (Read)
+// Hàm lấy tất cả dữ liệu
 function fetchAllData(callback) {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", apiUrl, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            callback(null, JSON.parse(xhr.responseText));
-        } else {
-            callback(xhr.status, null);
+    xhr.open('GET', apiUrl, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                callback(null, data);
+            } else {
+                callback(xhr.statusText, null);
+            }
         }
     };
     xhr.send();
 }
 
-// Hàm thêm dữ liệu mới (Create)
-function createItem(data, callback) {
+// Hàm xóa dữ liệu
+function handleDelete(id) {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", apiUrl, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onload = function() {
-        if (xhr.status === 201) {
-            callback(null, JSON.parse(xhr.responseText));
-        } else {
-            callback(xhr.status, null);
-        }
-    };
-    xhr.send(JSON.stringify(data));
-}
-
-// Hàm xóa dữ liệu (Delete)
-function deleteItem(id, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("DELETE", `${apiUrl}/${id}`, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            callback(null, JSON.parse(xhr.responseText));
-        } else {
-            callback(xhr.status, null);
+    xhr.open('DELETE', `${apiUrl}/${id}`, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            fetchAllData(function(err, data) {
+                if (err) {
+                    console.error("Error fetching data:", err);
+                } else {
+                    renderTable(data);
+                }
+            });
         }
     };
     xhr.send();
 }
 
-// Hàm cập nhật dữ liệu (Update)
-function updateItem(id, data, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("PUT", `${apiUrl}/${id}`, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            callback(null, JSON.parse(xhr.responseText));
-        } else {
-            callback(xhr.status, null);
-        }
+// Hàm cập nhật dữ liệu
+function handleEdit(id) {
+    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+    document.getElementById('editItemForm').onsubmit = function(event) {
+        event.preventDefault();
+        const name = document.getElementById('editName').value;
+        const image = document.getElementById('editImage').value;
+        const data = { name, image };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', `${apiUrl}/${id}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                fetchAllData(function(err, data) {
+                    if (err) {
+                        console.error("Error fetching data:", err);
+                    } else {
+                        renderTable(data);
+                        editModal.hide();
+                    }
+                });
+            }
+        };
+        xhr.send(JSON.stringify(data));
     };
-    xhr.send(JSON.stringify(data));
+
+    // Hiển thị modal chỉnh sửa
+    editModal.show();
 }
 
 // Hiển thị danh sách các địa điểm
@@ -69,6 +77,7 @@ function renderTable(data) {
                 <td>${item.name}</td>
                 <td><img src="${item.image}" alt="${item.name}" width="100"></td>
                 <td>
+                    <button class="btn btn-warning btn-sm" onclick="handleEdit(${item.id})">Edit</button>
                     <button class="btn btn-danger btn-sm" onclick="handleDelete(${item.id})">Delete</button>
                 </td>
             </tr>
@@ -86,51 +95,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-
-// Thêm mới một địa điểm
-document.getElementById("addItemForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const image = document.getElementById("image").value;
-
-    const newItem = {
-        name: name,
-        image: image
-    };
-
-    createItem(newItem, function(err, data) {
-        if (err) {
-            console.error("Error creating item:", err);
-        } else {
-            // Sau khi tạo mới, cập nhật lại danh sách
-            fetchAllData(function(err, data) {
-                if (err) {
-                    console.error("Error fetching data:", err);
-                } else {
-                    renderTable(data);
-                }
-            });
-        }
-    });
-});
-
-// Xóa một địa điểm
-function handleDelete(id) {
-    if (confirm("Are you sure you want to delete this item?")) {
-        deleteItem(id, function(err, data) {
-            if (err) {
-                console.error("Error deleting item:", err);
-            } else {
-                // Sau khi xóa, cập nhật lại danh sách
-                fetchAllData(function(err, data) {
-                    if (err) {
-                        console.error("Error fetching data:", err);
-                    } else {
-                        renderTable(data);
-                    }
-                });
-            }
-        });
-    }
-}
